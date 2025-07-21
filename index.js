@@ -10,8 +10,8 @@ let questions = [
   { question: "اضغط على قارة أمريكا الجنوبية", locations: [[-15, -60]] },
   { question: "اضغط على قارة أستراليا", locations: [[-25, 133]] },
   { question: "اضغط على قارة أنتاركتيكا", locations: [[-80, 0]] },
-  { question: "اضغط على المحيط الهادئ", locations: [[0, -160], [10, 170]] },
-  { question: "اضغط على المحيط الأطلسي", locations: [[13, -30]] },
+  { question: "اضغط على المحيط الهادئ", locations: [[40, -160], [40, 160], [-40, -165], [-40, 165], [0, -160], [0, 160]] },
+  { question: "اضغط على المحيط الأطلسي", locations: [[0, -30], [30, -50]] },
   { question: "اضغط على المحيط الهندي", locations: [[-13, 80]] },
   { question: "اضغط على المحيط المتجمد الشمالي", locations: [[80, 0]] },
   { question: "اضغط على المحيط المتجمد الجنوبي", locations: [[-70, 20]] },
@@ -76,7 +76,7 @@ const loadQuestion = () => {
 };
 
 const updateScore = () => {
-  scoreElement.textContent = `✅ صحيحة: ${correct} | ❌ خاطئة: ${wrong}`;
+  scoreElement.textContent = `❌ صحيحة: ${correct} | ✅ خاطئة: ${wrong}`;
 };
 
 const checkAnswer = (e) => {
