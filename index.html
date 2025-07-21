@@ -15,19 +15,16 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 <body>
-  <!-- ✅ شريط النتيجة بالأعلى -->
-  <div id="score-bar" style="width: 100%; text-align: center; margin-top: 20px;">
-    <p id="score">Your Score: 0</p>
-    <p id="high-score">High Score: 0</p>
-  </div>
-
   <div id="quiz-container">
     <div id="map"></div>
+
     <div id="question-container">
       <h2>اختبار الخرائط الجغرافية</h2>
       <h1 id="question"></h1>
       <p id="result"></p>
+
       <button id="next-question">السؤال التالي</button>
+      <p id="score"></p>
     </div>
   </div>
 
@@ -42,3 +39,4 @@
   <script src="index.js"></script>
 </body>
 </html>
+

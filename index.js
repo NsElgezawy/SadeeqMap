@@ -3,7 +3,7 @@
 // Date: July 2025
 
 let questions = [
-  { question: "اضغط على قارة أفريقيا", locations: [[0, 20]] },
+  { question: "اضغط على قارة أفريقيا", locations: [[13, 13]] },
   { question: "اضغط على قارة أوروبا", locations: [[54, 15]] },
   { question: "اضغط على قارة آسيا", locations: [[45, 90]] },
   { question: "اضغط على قارة أمريكا الشمالية", locations: [[55, -100]] },
@@ -14,25 +14,26 @@ let questions = [
   { question: "اضغط على المحيط الأطلسي", locations: [[13, -30]] },
   { question: "اضغط على المحيط الهندي", locations: [[-13, 80]] },
   { question: "اضغط على المحيط المتجمد الشمالي", locations: [[80, 0]] },
-  { question: "اضغط على المحيط المتجمد الجنوبي", locations: [[-60, 20]] },
-  { question: "اضغط على البحر الكاريبي", locations: [[20, -83]] },
-  { question: "اضغط على البحر الأبيض المتوسط", locations: [[35, 18]] },
-  { question: "اضغط على البحر الأحمر", locations: [[20, 40]] },
+  { question: "اضغط على المحيط المتجمد الجنوبي", locations: [[-70, 20]] },
+  { question: "اضغط على البحر الكاريبي", locations: [[20, -83]], isSea: true },
+  { question: "اضغط على البحر الأبيض المتوسط", locations: [[35, 18]], isSea: true },
+  { question: "اضغط على البحر الأحمر", locations: [[20, 40]], isSea: true },
 
-  { question: "من هي أكبر قارات العالم؟", locations: [[45, 90]] }, // آسيا
-  { question: "من هي أصغر قارات العالم؟", locations: [[-25, 133]] }, // أستراليا
-  { question: "من هي ثاني أكبر قارات العالم؟", locations: [[0, 20]] }, // أفريقيا
-  { question: "من هي سادس أكبر قارات العالم؟", locations: [[54, 15]] }, // أوروبا
+  { question: "اضغط علي أكبر قارات العالم؟", locations: [[45, 90]] }, // آسيا
+  { question: "اضغط علي أصغر قارات العالم؟", locations: [[-25, 133]] }, // أستراليا
+  { question: "اضغط علي ثاني أكبر قارات العالم؟", locations: [[13, 13]] }, // أفريقيا
+  { question: "اضغط علي سادس أكبر قارات العالم؟", locations: [[54, 15]] }, // أوروبا
   { question: "ما هي القارة التي تحتوي على أكبر بحر مغلق في العالم؟", locations: [[45, 90]] }, // آسيا
-  { question: "ما هي القارة التي تحتوي على أطول نهر في العالم؟", locations: [[0, 20]] }, // أفريقيا
+  { question: "ما هي القارة التي تحتوي على أطول نهر في العالم؟", locations: [[13, 13]] }, // أفريقيا
   { question: "ما هي القارة التي تحتوي على أكبر حوض نهري في العالم؟", locations: [[-15, -60]] }, // أمريكا الجنوبية
-  { question: "أين توجد جبال روكي في قارة؟", locations: [[55, -100]] }, // أمريكا الشمالية
-  { question: "أين توجد جبال الألب في قارة؟", locations: [[54, 15]] }, // أوروبا
-  { question: "أين توجد أعلى نقطة في العالم في قارة؟", locations: [[45, 90]] }, // آسيا
-  { question: "أين توجد هضبة سقف العالم في قارة؟", locations: [[45, 90]] }, // آسيا
+  { question: " توجد جبال روكي في قارة؟", locations: [[55, -100]] }, // أمريكا الشمالية
+  { question: " توجد جبال الألب في قارة؟", locations: [[54, 15]] }, // أوروبا
+  { question: " توجد أعلى نقطة في العالم في قارة؟", locations: [[45, 90]] }, // آسيا
+  { question: " توجد هضبة سقف العالم في قارة؟", locations: [[45, 90]] }, // آسيا
 ];
 
-let score = 0;
+let correct = 0;
+let wrong = 0;
 let highScore = 0;
 
 const map = L.map("map").setView([20, 0], 2);
@@ -44,7 +45,6 @@ L.tileLayer("https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png
 const questionElement = document.getElementById("question");
 const resultElement = document.getElementById("result");
 const scoreElement = document.getElementById("score");
-const highScoreElement = document.getElementById("high-score");
 const nextButton = document.getElementById("next-question");
 
 const markerGroup = L.layerGroup().addTo(map);
@@ -57,6 +57,7 @@ function shuffleArray(array) {
 }
 
 let currentQuestion = null;
+let answered = false;
 
 const loadQuestion = () => {
   if (questions.length === 0) {
@@ -69,17 +70,18 @@ const loadQuestion = () => {
   currentQuestion = questions.shift();
   questionElement.textContent = currentQuestion.question;
   resultElement.textContent = "";
-  resultElement.style.color = "#fff";
   markerGroup.clearLayers();
   updateScore();
+  answered = false;
 };
 
 const updateScore = () => {
-  scoreElement.textContent = `Your Score: ${score}`;
-  highScoreElement.textContent = `High Score: ${highScore}`;
+  scoreElement.textContent = `✅ صحيحة: ${correct} | ❌ خاطئة: ${wrong}`;
 };
 
 const checkAnswer = (e) => {
+  if (answered) return; // تجنب النقر مرتين
+
   const lat = e.latlng.lat;
   const lng = e.latlng.lng;
 
@@ -100,11 +102,17 @@ const checkAnswer = (e) => {
     }),
   }).addTo(markerGroup);
 
-  if (minDistance < 2500000) {
-    score++;
+  let allowedDistance = 2500000;
+  if (currentQuestion.isSea) {
+    allowedDistance = 990000;
+  }
+
+  if (minDistance < allowedDistance) {
+    correct++;
     resultElement.textContent = "إجابة صحيحة ✅";
     resultElement.style.color = "lightgreen";
   } else {
+    wrong++;
     const wrongMarker = L.marker([lat, lng], {
       icon: L.divIcon({
         html: '<div style="background: red; width: 16px; height: 16px; border-radius: 50%; border: 2px solid white;"></div>',
@@ -117,13 +125,10 @@ const checkAnswer = (e) => {
     resultElement.style.color = "#ff6961";
   }
 
-  if (score > highScore) {
-    highScore = score;
-  }
-
   updateScore();
+  answered = true; // يمنع تكرار الإجابة
 
-  setTimeout(loadQuestion, 1500);
+  document.getElementById("question-container").scrollIntoView({ behavior: "smooth" });
 };
 
 map.on("click", checkAnswer);
