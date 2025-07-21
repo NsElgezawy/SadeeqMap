@@ -1,6 +1,6 @@
 # 🌍 SadeeqMap — Interactive World Map Quiz
 
-**GeoBuddy** is an interactive educational map quiz that tests your knowledge of the world's continents, oceans, and seas.
+**SadeeqMap** is an interactive educational map quiz that tests your knowledge of the world's continents, oceans, and seas.
 It’s a simple, fun, and engaging project for students, teachers, and anyone who wants to learn geography in an interactive way.
 
 ---
@@ -8,9 +8,8 @@ It’s a simple, fun, and engaging project for students, teachers, and anyone wh
 ## 👨‍💻 Developer
 
 - **Name:** Anas El-gezawy
-- **Project Name:** GeoBuddy (Buddy)
+- **Project Name:** SadeeqMap
 - **Year:** 2025
-- 📞 **Contact:** 01509089110
 
 ---
 

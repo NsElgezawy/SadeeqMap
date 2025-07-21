@@ -1,5 +1,5 @@
 <!-- 
-  Project: Interactive World Map Quiz
+  Project: SadeeqMap
   Developer: Anas El-gezawy
   Year: 2025
 -->
@@ -15,13 +15,18 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 <body>
+  <!-- ✅ شريط النتيجة بالأعلى -->
+  <div id="score-bar" style="width: 100%; text-align: center; margin-top: 20px;">
+    <p id="score">Your Score: 0</p>
+    <p id="high-score">High Score: 0</p>
+  </div>
+
   <div id="quiz-container">
     <div id="map"></div>
     <div id="question-container">
       <h2>اختبار الخرائط الجغرافية</h2>
       <h1 id="question"></h1>
       <p id="result"></p>
-      <p id="score"></p>
       <button id="next-question">السؤال التالي</button>
     </div>
   </div>
@@ -29,7 +34,7 @@
   <footer>
     <hr />
     <p> أ. حمزه صالح - مدرس التاريخ والجغرافيا</p>
-    <p>📞  للتواصل: 01509089110</p>
+    <p>📞 للتواصل: 01509089110</p>
     <p>📘 مذكرات "الصديق" – معاً لتطوير التعليم 💡</p>
   </footer>
 
@@ -37,4 +42,3 @@
   <script src="index.js"></script>
 </body>
 </html>
-
