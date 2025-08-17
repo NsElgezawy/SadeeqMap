@@ -15,7 +15,18 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 <body>
-  <div id="quiz-container">
+  <!-- شاشة البداية -->
+  <div id="start-screen">
+    <h1>اختر وضع اللعبة</h1>
+    <button id="btn-world">🌍 خريطة العالم</button>
+    <button id="btn-africa">🌍 خريطة أفريقيا</button>
+  </div>
+
+  <!-- شاشة الكويز -->
+  <div id="quiz-container" style="display:none;">
+    <!-- زرار الرجوع -->
+    <button id="back-button"> رجوع</button>
+
     <div id="map"></div>
 
     <div id="question-container">
@@ -31,7 +42,7 @@
   <footer>
     <hr />
     <p> أ. حمزه صالح - مدرس التاريخ والجغرافيا</p>
-    <p>📞 للتواصل: 01509089110</p>
+    <p>📞 للتواصل: 01062718496</p>
     <p>📘 مذكرات "الصديق" – معاً لتطوير التعليم 💡</p>
   </footer>
 
@@ -39,4 +50,3 @@
   <script src="index.js"></script>
 </body>
 </html>
-

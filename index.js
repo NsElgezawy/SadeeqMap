@@ -2,7 +2,37 @@
 // Developer: Anas El-gezawy
 // Date: July 2025
 
-let questions = [
+// === أسئلة أفريقيا ===
+const africaQuestions =[
+  { question: "اضغط على مضيق جبل طارق", locations: [[35.74651, -5.88867]], smallRange: true },
+  { question: "اضغط على جبال أطلس", locations: [[33.30272, 2.28103]], smallRange: true },
+  { question: "اضغط على هضبة شمال أفريقيا", locations: [[25.82185, -0.88461], [25.82185, 11.07448]], smallRange: true },
+  { question: "اضغط على نهر السنغال", locations: [[13.09673, -10.0298]], smallRange: true },
+  { question: "اضغط على نهر النيجر", locations: [[9.47853, 1.92929]], smallRange: true },
+  { question: "اضغط على نهر الكونغو", locations: [[-4.1808, 18.10924]], smallRange: true },
+  { question: "اضغط على جبل العوينات", locations: [[19.83295, 23.03358]], smallRange: true },
+  { question: "اضغط على جبال البحر الأحمر", locations: [[22.61727, 35.16854]], smallRange: true },
+  { question: "اضغط على نهر النيل", locations: [[27.08045, 30.06834]], smallRange: true },
+  { question: "اضغط على بحيرة تانا", locations: [[11.89582, 37.1031]], smallRange: true },
+  { question: "اضغط على هضبة الحبشة", locations: [[8.08925, 39.03766]], smallRange: true },
+  { question: "اضغط على جبل كينيا", locations: [[1.61421, 39.74113]], smallRange: true },
+  { question: "اضغط على جبل كلمنجارو", locations: [[-7.50942, 37.09845]], smallRange: true },
+  { question: "اضغط على بحيرة فيكتوريا", locations: [[-1.37278, 33.05811]], smallRange: true },
+  { question: "اضغط على مضيق باب المندب", locations: [[12.75418, 43.25851]], smallRange: true },
+  { question: "اضغط على هضبة البحيرات الاستوائية", locations: [[-8.03176, 32.70172]], smallRange: true },
+  { question: "اضغط على نهر الزمبيزي", locations: [[-15.93218, 34.63628]], smallRange: true },
+  { question: "اضغط على مضيق موزمبيق", locations: [[-16.43846, 42.02278]], smallRange: true },
+  { question: "اضغط على الهضبة الجنوبية", locations: [[-17.782, 19.33567]], smallRange: true },
+  { question: "اضغط على نهر أورانج", locations: [[-27.18516, 18.6322]], smallRange: true },
+  { question: "اضغط على جبال الكاب", locations: [[-33.401, 22.14958]], smallRange: true },
+  { question: "اضغط على جبال دراكنزبرج", locations: [[-31.6229, 28.12913]], smallRange: true },
+  { question: "اضغط على صحراء كلهاري", locations: [[-23.21122, 20.21502]], smallRange: true },
+  { question: "اضغط على خليج غينيا", locations: [[1.07946, 2.10051]], smallRange: true },
+];
+
+
+// === أسئلة العالم ===
+const worldQuestions = [
   { question: "اضغط على قارة أفريقيا", locations: [[13, 13]] },
   { question: "اضغط على قارة أوروبا", locations: [[54, 15]] },
   { question: "اضغط على قارة آسيا", locations: [[45, 90]] },
@@ -15,9 +45,9 @@ let questions = [
   { question: "اضغط على المحيط الهندي", locations: [[-13, 80]] },
   { question: "اضغط على المحيط المتجمد الشمالي", locations: [[80, 0]] },
   { question: "اضغط على المحيط المتجمد الجنوبي", locations: [[-70, 20]] },
-  { question: "اضغط على البحر الكاريبي", locations: [[20, -83]], isSea: true },
-  { question: "اضغط على البحر الأبيض المتوسط", locations: [[35, 18]], isSea: true },
-  { question: "اضغط على البحر الأحمر", locations: [[20, 40]], isSea: true },
+  { question: "اضغط على البحر الكاريبي", locations: [[20, -83]], smallRange: true },
+  { question: "اضغط على البحر الأبيض المتوسط", locations: [[35, 18]], smallRange: true },
+  { question: "اضغط على البحر الأحمر", locations: [[20, 40]], smallRange: true },
 
   { question: "اضغط علي أكبر قارات العالم؟", locations: [[45, 90]] }, // آسيا
   { question: "اضغط علي أصغر قارات العالم؟", locations: [[-25, 133]] }, // أستراليا
@@ -32,23 +62,18 @@ let questions = [
   { question: " توجد هضبة سقف العالم في قارة؟", locations: [[45, 90]] }, // آسيا
 ];
 
+
+// === متغيرات عامة للعبة ===
+let questions = [];
 let correct = 0;
 let wrong = 0;
 let highScore = 0;
 
-const map = L.map("map").setView([20, 0], 2);
+let map, markerGroup;
+let currentQuestion = null;
+let answered = false;
 
-L.tileLayer("https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png", {
-  attribution: '&copy; <a href="https://carto.com/">CARTO</a>'
-}).addTo(map);
-
-const questionElement = document.getElementById("question");
-const resultElement = document.getElementById("result");
-const scoreElement = document.getElementById("score");
-const nextButton = document.getElementById("next-question");
-
-const markerGroup = L.layerGroup().addTo(map);
-
+// === وظائف ===
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -56,31 +81,28 @@ function shuffleArray(array) {
   }
 }
 
-let currentQuestion = null;
-let answered = false;
-
 const loadQuestion = () => {
   if (questions.length === 0) {
-    questionElement.textContent = "🎉 انتهت جميع الأسئلة!";
-    resultElement.textContent = "";
-    nextButton.disabled = true;
+    document.getElementById("question").textContent = "🎉 انتهت جميع الأسئلة!";
+    document.getElementById("result").textContent = "";
+    document.getElementById("next-question").disabled = true;
     return;
   }
 
   currentQuestion = questions.shift();
-  questionElement.textContent = currentQuestion.question;
-  resultElement.textContent = "";
+  document.getElementById("question").textContent = currentQuestion.question;
+  document.getElementById("result").textContent = "";
   markerGroup.clearLayers();
   updateScore();
   answered = false;
 };
 
 const updateScore = () => {
-  scoreElement.textContent = `❌ صحيحة: ${correct} | ✅ خاطئة: ${wrong}`;
+  document.getElementById("score").textContent = `❌ صحيحة: ${correct} | ✅ خاطئة: ${wrong}`;
 };
 
 const checkAnswer = (e) => {
-  if (answered) return; // تجنب النقر مرتين
+  if (answered) return;
 
   const lat = e.latlng.lat;
   const lng = e.latlng.lng;
@@ -90,7 +112,6 @@ const checkAnswer = (e) => {
   });
 
   const minDistance = Math.min(...distances);
-
   const closestIndex = distances.indexOf(minDistance);
   const [correctLat, correctLng] = currentQuestion.locations[closestIndex];
 
@@ -102,18 +123,15 @@ const checkAnswer = (e) => {
     }),
   }).addTo(markerGroup);
 
-  let allowedDistance = 2500000;
-  if (currentQuestion.isSea) {
-    allowedDistance = 990000;
-  }
+  let allowedDistance = currentQuestion.smallRange ? 990000 : 2200000;
 
   if (minDistance < allowedDistance) {
     correct++;
-    resultElement.textContent = "إجابة صحيحة ✅";
-    resultElement.style.color = "lightgreen";
+    document.getElementById("result").textContent = "إجابة صحيحة ✅";
+    document.getElementById("result").style.color = "lightgreen";
   } else {
     wrong++;
-    const wrongMarker = L.marker([lat, lng], {
+    L.marker([lat, lng], {
       icon: L.divIcon({
         html: '<div style="background: red; width: 16px; height: 16px; border-radius: 50%; border: 2px solid white;"></div>',
         iconSize: [16, 16],
@@ -121,19 +139,55 @@ const checkAnswer = (e) => {
       }),
     }).addTo(markerGroup);
 
-    resultElement.textContent = "إجابة خاطئة ❌";
-    resultElement.style.color = "#ff6961";
+    document.getElementById("result").textContent = "إجابة خاطئة ❌";
+    document.getElementById("result").style.color = "#ff6961";
   }
 
   updateScore();
-  answered = true; // يمنع تكرار الإجابة
-
+  answered = true;
   document.getElementById("question-container").scrollIntoView({ behavior: "smooth" });
 };
 
-map.on("click", checkAnswer);
+// === تشغيل اللعبة ===
+function startGame(mode) {
+  // اخفاء شاشة البداية
+  document.getElementById("start-screen").style.display = "none";
+  document.getElementById("quiz-container").style.display = "block";
 
-nextButton.addEventListener("click", loadQuestion);
+  // اختيار الأسئلة
+  questions = (mode === "africa" ? [...africaQuestions] : [...worldQuestions]);
 
-shuffleArray(questions);
-loadQuestion();
+  // تجهيز الخريطة
+  map = L.map("map").setView([20, 0], 2);
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png", {
+    attribution: '&copy; <a href="https://carto.com/">CARTO</a>'
+  }).addTo(map);
+
+  markerGroup = L.layerGroup().addTo(map);
+
+  map.on("click", checkAnswer);
+  document.getElementById("next-question").addEventListener("click", loadQuestion);
+
+  shuffleArray(questions);
+  loadQuestion();
+}
+
+// === ربط الأزرار ===
+document.getElementById("btn-world").addEventListener("click", () => startGame("world"));
+document.getElementById("btn-africa").addEventListener("click", () => startGame("africa"));
+document.getElementById("back-button").addEventListener("click", () => {
+  // اخفاء الكويز
+  document.getElementById("quiz-container").style.display = "none";
+  // إظهار شاشة البداية
+  document.getElementById("start-screen").style.display = "flex";
+
+  // إعادة تعيين المتغيرات
+  correct = 0;
+  wrong = 0;
+
+  // تدمير الخريطة القديمة لو لسه مفتوحة
+  if (map) {
+    map.remove();
+  }
+});
+
